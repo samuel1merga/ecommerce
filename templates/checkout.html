@@ -1,0 +1,23 @@
+{%extends "base.html"%}{% load static %} {%block title%} checkout {% endblock %}
+{%block content %}
+<link href="{% static 'checkout.css' %}" rel="stylesheet" />
+
+<h2>Checkout</h2>
+
+<form method="post" action="{% url 'process_checkout' %}">
+  {% csrf_token %}
+  <label>Name:</label><br />
+  <input type="text" name="name" required /><br /><br />
+
+  <label>Address:</label><br />
+  <textarea name="address" required></textarea><br /><br />
+
+  <label>Payment Method:</label><br />
+  <select name="payment_method">
+    <option value="card">Credit/Debit Card</option>
+    <option value="cod">Cash on Delivery</option></select
+  ><br /><br />
+
+  <button type="submit">Place Order</button>
+</form>
+{% endblock %}

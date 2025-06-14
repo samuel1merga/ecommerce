@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% load static %} {% block title %}Edit Product
+{%endblock %} {% block content %}
+<style>
+  .edit-product-form {
+    max-width: 700px;
+    margin: 120px auto 50px;
+    padding: 30px;
+    background-color: #ffffffdd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .edit-product-form h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+  }
+
+  .edit-product-form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    color: #333;
+  }
+
+  .edit-product-form input[type="text"],
+  .edit-product-form input[type="number"],
+  .edit-product-form textarea,
+  .edit-product-form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .edit-product-form textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  .edit-product-form input[type="checkbox"] {
+    margin-top: 10px;
+  }
+
+  .edit-product-form button {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .edit-product-form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+  }
+</style>
+
+<div class="edit-product-form">
+  <h2>Edit Product</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ product.name }}" />
+
+    <label>Description:</label>
+    <textarea name="description">{{ product.description }}</textarea>
+
+    <label>Price:</label>
+    <input type="number" name="price" value="{{ product.price }}" step="0.01" />
+
+    <label>Stock:</label>
+    <input type="number" name="stock" value="{{ product.stock }}" />
+
+    <label>Status:</label>
+    <input
+      type="checkbox"
+      name="status"
+      {%
+      if
+      product.status
+      %}checked{%
+      endif
+      %}
+    />
+    Active
+
+    <label>Image:</label>
+    <input type="file" name="image" />
+
+    <button type="submit">Update</button>
+  </form>
+</div>
+{% endblock %}

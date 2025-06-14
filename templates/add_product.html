@@ -1,0 +1,70 @@
+{%extends "base.html"%}
+<h1></h1>
+{%block title%}add products {%endblock %} {%block content %}
+<style>
+  .form-container {
+    width: 400px;
+    margin: 120px auto; /* Adjust vertical spacing */
+    padding: 25px 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .form-container form label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="number"],
+  .form-container input[type="file"],
+  .form-container textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .form-container textarea {
+    resize: vertical;
+  }
+
+  .form-container button {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #4caf50;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .form-container button:hover {
+    background-color: #29662c;
+  }
+</style>
+
+<div class="form-container">
+  <h2>Add Product</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Name:</label><input type="text" name="name" />
+    <label>Description:</label><textarea name="description"></textarea>
+    <label>Price:</label><input type="number" name="price" step="0.01" />
+    <label>Stock:</label><input type="number" name="stock" />
+    <label>Status:</label><input type="checkbox" name="status" /> Active
+    <label>Image:</label><input type="file" name="image" />
+    <button type="submit">Add</button>
+  </form>
+</div>
+
+{% endblock %}

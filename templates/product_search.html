@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% load static %}{% block title %}Search Results
+<h1></h1>
+{% endblock %} {% block content %}
+<style>
+  .search-form {
+    display: flex;
+    gap: 8px;
+    max-width: 400px;
+    margin: 20px auto;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .search-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+</style>
+<h2>Search Results for "{{ query }}"</h2>
+<link href="{% static 'list.css' %}" rel="stylesheet" />
+<form method="GET" action="{% url 'product_search' %}" class="search-form">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search products..."
+    value="{{ request.GET.q }}"
+    class="search-input"
+  />
+  <button type="submit" class="search-button">Search</button>
+</form>
+
+{% if products %}
+
+<ul>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      {% if product.image %}
+      <div class="image-wrapper">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+        <div class="overlay-text">
+          <p class="for">{{ product.name }}</p>
+          <a href="{% url 'product_detail' product.pk %}" class="button"
+            >View Details</a
+          >
+        </div>
+      </div>
+      {% else %}
+      <p>No image available</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</ul>
+{% else %}
+<p>No results found.</p>
+{% endif %} {% endblock %}

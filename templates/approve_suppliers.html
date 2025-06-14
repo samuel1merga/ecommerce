@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% load static %} {% block title %}Approve Suppliers
+{%endblock %} {% block content %}
+<style>
+  .approve-suppliers {
+    max-width: 800px;
+    margin: 120px auto 50px;
+    padding: 30px;
+    background-color: #ffffffcc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .approve-suppliers h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+  }
+
+  .approve-suppliers ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .approve-suppliers li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .approve-suppliers form {
+    margin: 0;
+  }
+
+  .approve-suppliers button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .approve-suppliers button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+  }
+
+  .approve-suppliers .empty {
+    font-style: italic;
+    color: #666;
+    padding: 10px;
+  }
+</style>
+
+<div class="approve-suppliers">
+  <h2>Pending Supplier Approvals</h2>
+  <ul>
+    {% for supplier in suppliers %}
+    <li>
+      <span>{{ supplier.user.username }}</span>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="supplier_id" value="{{ supplier.id }}" />
+        <button type="submit">Approve</button>
+      </form>
+    </li>
+    {% empty %}
+    <li class="empty">No pending suppliers.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

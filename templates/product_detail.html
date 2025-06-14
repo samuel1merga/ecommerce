@@ -1,0 +1,37 @@
+{%extends "base.html"%}{% load static %} {%block title%} Products {% endblock %}
+{%block content %}
+<link href="{% static 'detail.css' %}" rel="stylesheet" />
+
+<div class="container">
+  <div class="image-wrapper">
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+    {% else %}
+    <img src="{% static 'images/placeholder.jpg' %}" alt="No image available" />
+    {% endif %}
+  </div>
+  <div class="details">
+    <h1 class="name">{{ product.name }}</h1>
+    <p class="description">{{ product.description }}</p>
+    <p class="stock {% if product.stock > 0 %}in{% else %}out{% endif %}">
+      {% if product.stock > 0 %} In stock: {{ product.stock }} {% else %} Out of
+      stock {% endif %}
+    </p>
+
+    {% if product.stock > 0 %}
+    <p class="each">it is {{product.price}}$ for each</p>
+
+    <form
+      method="post"
+      action="{% if user.is_authenticated %}{% url 'add_to_cart' product.id %}{% else %}{% url 'login' %}{% endif %}"
+    >
+      {% csrf_token %}
+      <label>Quantity:</label>
+      <input type="number" name="quantity" value="1" min="1" />
+      <button type="submit">Add to Cart</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

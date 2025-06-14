@@ -1,0 +1,181 @@
+{% extends "base.html" %} {% load static %}
+<h1></h1>
+{% block title %}admin Dashboard{% endblock %} {% block content %}
+<style>
+  .admin-dashboard {
+    max-width: 1200px;
+    margin: 120px auto 50px;
+    padding: 30px;
+    background-color: #ffffffcc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .admin-dashboard h1,
+  .admin-dashboard h2 {
+    text-align: left;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+  }
+
+  .admin-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    background-color: #fdfdfd;
+  }
+
+  .admin-dashboard thead {
+    background-color: #333;
+    color: white;
+  }
+
+  .admin-dashboard th,
+  .admin-dashboard td {
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .admin-dashboard tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .admin-dashboard tbody tr:hover {
+    background-color: #eef4f4;
+  }
+
+  .admin-dashboard a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .admin-dashboard a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+  }
+
+  .admin-dashboard hr {
+    margin: 40px 0;
+    border: none;
+    height: 1px;
+    background: #ccc;
+  }
+</style>
+
+<div class="admin-dashboard">
+  <h1 class="welcome">Welcome {{user.username}}!</h1>
+  <!-- Suppliers -->
+  <h2>Suppliers</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>User</th>
+        <th>Contact</th>
+        <th>Address</th>
+        <th>Approved</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for supplier in suppliers %}
+      <tr>
+        <td>{{ supplier.company_name }}</td>
+        <td>{{ supplier.user.username }}</td>
+        <td>{{ supplier.contact_number }}</td>
+        <td>{{ supplier.address }}</td>
+        <td>{{ supplier.is_approved|yesno:"Yes,No" }}</td>
+        <td>
+          {% if not supplier.is_approved %}
+          <a href="{% url 'approve_supplier' supplier.id %}">Approve</a>
+          {% else %}
+          <a href="{% url 'deactivate_supplier' supplier.id %}">Deactivate</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- Products -->
+  <h2>Products</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Supplier</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.supplier.company_name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.status|yesno:"Active,Inactive" }}</td>
+        <td>
+          <a
+            href="{% url 'delete_product_admin' product.id %}"
+            onclick="return confirm('Are you sure?');"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- Orders -->
+  <h2>Recent Orders</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Total</th>
+        <th>Payment Method</th>
+        <th>Date</th>
+        <th>delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>
+          {% if order.user %}{{ order.user.username }}{% else %}Guest{% endif %}
+        </td>
+        <td>{{ order.name }}</td>
+        <td>{{ order.address }}</td>
+        <td>{{ order.total }}</td>
+        <td>{{ order.payment_method }}</td>
+        <td>{{ order.created_at }}</td>
+        <td>
+          <a
+            href="{% url 'delete_order' order.id %}"
+            onclick="return confirm('Are you sure you want to delete this order?');"
+          >
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

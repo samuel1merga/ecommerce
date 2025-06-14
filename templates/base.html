@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}My Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <div class="contente">
+      <header>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+
+          {% if user.is_authenticated %} {% if user.supplier %}
+          <li>
+            <a href="{% url 'supplier_dashboard' %}">Supplier Dashboard</a>
+          </li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% elif user.is_staff %}
+          <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% endif %} {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+          {% endif %}
+        </ul>
+      </header>
+
+      <main>{% block content %} {% endblock %}</main>
+
+      <footer id="footer">
+        <div class="footer-content">
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <a href="https://t.me/samiidoc" target="_blank">
+              <img
+                src="{% static 'telegram.png' %}"
+                alt="Telegram"
+                width="22"
+                height="22"
+                style="vertical-align: middle"
+            /></a>
+          </ul>
+          <p>Copyright © 2025 Welldone Market</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{%extends "base.html"%}{%load static%}{%block title%}about{%endblock %}
+<h1></h1>
+{%block content %}
+
+<link href="{% static 'about-us-page.css' %}" rel="stylesheet" />
+
+<div class="container">
+  <div class="box">
+    <h1>Welldone Market</h1>
+    <p>
+      out job is to allows people to buy and sell products or services online.
+      It's like a virtual shop or marketplace that handles everything from
+      displaying items to accepting payments and managing orders.
+    </p>
+  </div>
+  <div class="box1">
+    <img src="{% static 'my.png' %}" alt="" />
+  </div>
+</div>
+{% endblock %}

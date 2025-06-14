@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Supplier Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  .supplier-dashboard {
+    max-width: 1000px;
+    margin: 130px auto 50px;
+    padding: 20px;
+    background-color: #ffffffec;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .supplier-dashboard h2 {
+    text-align: left;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+  }
+
+  .supplier-dashboard a.add-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .supplier-dashboard a.add-button:hover {
+    background-color: #1e7e34;
+  }
+
+  .supplier-dashboard form {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .supplier-dashboard select,
+  .supplier-dashboard button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .supplier-dashboard button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    transition: background 0.3s;
+  }
+
+  .supplier-dashboard button:hover {
+    background-color: #0056b3;
+  }
+
+  .product-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .product-list li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+    background-color: #f9f9f9;
+  }
+
+  .product-list img {
+    margin-top: 10px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+  }
+
+  .product-list a {
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .product-list a:hover {
+    text-decoration: underline;
+  }
+
+  .no-products {
+    font-style: italic;
+    color: #666;
+  }
+</style>
+
+<div class="supplier-dashboard">
+
+  <h1 class="welcome">Welcome {{user.username}}!</h1>
+
+  <a href="{% url 'add_product' %}" class="add-button">+ Add New Product</a>
+
+  <form method="get">
+    <label>Filter:</label>
+    <select name="status">
+      <option value="">All</option>
+      <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+      <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+
+    <label>Sort by:</label>
+    <select name="sort">
+      <option value="">Default</option>
+      <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+      <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Price</option>
+    </select>
+
+    <button type="submit">Apply</button>
+  </form>
+
+  {% if products %}
+    <ul class="product-list">
+      {% for product in products %}
+        <li>
+          <strong>{{ product.name }}</strong>
+          {% if product.image %}
+            <br><img src="{{ product.image.url }}" width="100">
+          {% endif %}
+          <br>Price: ${{ product.price }}
+          <br>Stock: {{ product.stock }}
+          <br>Status: {{ product.status|yesno:"Active,Inactive" }}
+          <br>
+          <a href="{% url 'edit_product' product.id %}">Edit</a>
+          |
+          <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-products">No products found.</p>
+  {% endif %}
+</div>
+{% endblock %}

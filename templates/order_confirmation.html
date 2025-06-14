@@ -1,0 +1,10 @@
+{%extends "base.html"%}{% load static %} {%block title%} comfirm {% endblock %}
+{%block content %}
+<link href="{% static 'confirm.css' %}" rel="stylesheet" />
+
+<div class="confirmation-container">
+  <h2>🎉 Thank You!</h2>
+  <p>Your order has been placed successfully.</p>
+  <a href="{% url 'product_list' %}" class="btn">Continue Shopping</a>
+</div>
+{% endblock %}

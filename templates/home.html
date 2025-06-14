@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% load static %} {% block title %}Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style.css' %}" />
+{% endblock %} {% block content %}
+
+<section id="home">
+  <div class="hero">
+    <h1 class="brand">WeLLDoNe MaRKeT</h1>
+    {% if user.is_authenticated%}
+    <h1 class="welcome">Welcome {{user.username}}!</h1>
+    {% else %}
+    <h1 class="welcome">Welcome to Our Store!</h1>
+    {%endif%}
+    <p>Discover amazing products at unbeatable prices.</p>
+    <a href="{% url 'product_list' %}" class="cta-button">View Products</a>
+  </div>
+</section>
+{% endblock %}
