@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!rh=&lnr4crz7b9k-ujf84lm)6zt_2x+fx%rd=7$*3j@l$^wyz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['ecommerce.onrender.com']
 
+ALLOWED_HOSTS = ['commerce-7tl6.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
